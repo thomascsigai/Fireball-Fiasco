@@ -22,7 +22,7 @@ void SpawnFireball(const Djipi::Vector2& playerPosition, const Djipi::Vector2& p
 	SDL_GetMouseState(&x, &y);
 
 	Djipi::Vector2 mousePos = Djipi::Vector2(x, y);
-	Djipi::Vector2 moveDirection = Djipi::Normalize(mousePos - playerPosition);
+	Djipi::Vector2 moveDirection = Djipi::Normalize(mousePos - (playerPosition + (playerSize / 2)));
 
 	Djipi::Vector2 fireballPosition = playerPosition + (playerSize / 2) - Djipi::Vector2(FIREBALL_SIZE / 2, FIREBALL_SIZE / 2);
 

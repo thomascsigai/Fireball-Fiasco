@@ -79,11 +79,12 @@ namespace DjipiApp
 		SDL_GetMouseState(&x, &y);
 
 		Djipi::Vector2 mousePos = Djipi::Vector2(x, y);
+		Djipi::Vector2 centerPlayer = m_Transform.position + (m_Transform.size / 2);
 
-		double cosTheta = (m_Transform.position.y - mousePos.y) / Djipi::Magnitude((mousePos - m_Transform.position));
+		double cosTheta = (centerPlayer.y - mousePos.y) / Djipi::Magnitude((mousePos - centerPlayer));
 		m_RotAngle = acos(cosTheta) * 180.0 / M_PI;
 
-		if (mousePos.x < m_Transform.position.x)
+		if (mousePos.x < centerPlayer.x)
 		{
 			m_RotAngle *= -1;
 		}
