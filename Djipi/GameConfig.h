@@ -22,6 +22,7 @@ constexpr Uint16 PLAYER_SPEED = 300;
 
 constexpr Uint16 FIREBALL_SPEED = 500;
 constexpr Uint16 FIREBALL_SIZE = 10;
+const size_t MAX_FIREBALLS_NUMBER = 50;
 
 // KEYBINDS ---------------------------------------------------------
 

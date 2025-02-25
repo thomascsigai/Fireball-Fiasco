@@ -8,14 +8,16 @@
 #include <SDL_ttf.h>
 #include <SDL_mixer.h>
 
-#include <vector>
+#include <array>
 
 #include <Player.h>
 #include <Fireball.h>
 #include <UserEvents.h>
 
-void SpawnFireball(const Djipi::Vector2& playerPosition, const Djipi::Vector2& playerSize, std::vector<DjipiApp::Fireball>& fireballs)
+void SpawnFireball(const Djipi::Vector2& playerPosition, const Djipi::Vector2& playerSize, std::array<DjipiApp::Fireball, MAX_FIREBALLS_NUMBER>& fireballs)
 {
+	static size_t index = 0;
+
 	int x, y;
 	SDL_GetMouseState(&x, &y);
 
@@ -24,7 +26,8 @@ void SpawnFireball(const Djipi::Vector2& playerPosition, const Djipi::Vector2& p
 
 	Djipi::Vector2 fireballPosition = playerPosition + (playerSize / 2) - Djipi::Vector2(FIREBALL_SIZE / 2, FIREBALL_SIZE / 2);
 
-	fireballs.emplace_back(fireballPosition, moveDirection);
+	fireballs[index] = DjipiApp::Fireball(fireballPosition, moveDirection);
+	index = (index + 1) % MAX_FIREBALLS_NUMBER;
 }
 
 int main(int argc, char* argv[])
@@ -55,7 +58,8 @@ int main(int argc, char* argv[])
 	DjipiApp::Player player = DjipiApp::Player();
 	player.SetTexture(resourceManager.GetTexture("resources\\textures\\player.png"));
 
-	std::vector<DjipiApp::Fireball> fireballs = std::vector<DjipiApp::Fireball>();
+	const size_t MAX_FIREBALLS = 50;
+	std::array<DjipiApp::Fireball, MAX_FIREBALLS> fireballs;
 
 	// GAME LOOP
 	while (!quit)
