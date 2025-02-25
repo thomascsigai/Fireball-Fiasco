@@ -14,7 +14,7 @@
 #include <Fireball.h>
 #include <UserEvents.h>
 
-void SpawnFireball(const Djipi::Vector2& playerPosition, std::vector<DjipiApp::Fireball>& fireballs)
+void SpawnFireball(const Djipi::Vector2& playerPosition, const Djipi::Vector2& playerSize, std::vector<DjipiApp::Fireball>& fireballs)
 {
 	int x, y;
 	SDL_GetMouseState(&x, &y);
@@ -22,7 +22,9 @@ void SpawnFireball(const Djipi::Vector2& playerPosition, std::vector<DjipiApp::F
 	Djipi::Vector2 mousePos = Djipi::Vector2(x, y);
 	Djipi::Vector2 moveDirection = Djipi::Normalize(mousePos - playerPosition);
 
-	fireballs.emplace_back(playerPosition, moveDirection);
+	Djipi::Vector2 fireballPosition = playerPosition + (playerSize / 2) - Djipi::Vector2(FIREBALL_SIZE / 2, FIREBALL_SIZE / 2);
+
+	fireballs.emplace_back(fireballPosition, moveDirection);
 }
 
 int main(int argc, char* argv[])
@@ -72,7 +74,7 @@ int main(int argc, char* argv[])
 			}
 			if (e.type == UserEvents::SPAWN_FIREBALL)
 			{
-				SpawnFireball(player.GetTransform2D().position, fireballs);
+				SpawnFireball(player.GetTransform2D().position, player.GetTransform2D().size, fireballs);
 			}
 
 			// Handle your events here

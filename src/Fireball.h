@@ -10,7 +10,7 @@ namespace DjipiApp
 		Fireball(Djipi::Vector2 position, Djipi::Vector2 moveDirection)
 		{
 			m_Transform.SetPosition(position.x, position.y);
-			m_Transform.SetSize(10, 10);
+			m_Transform.SetSize(FIREBALL_SIZE, FIREBALL_SIZE);
 
 			m_Velocity = moveDirection * FIREBALL_SPEED;
 		}
