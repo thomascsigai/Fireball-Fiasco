@@ -65,7 +65,7 @@ namespace DjipiApp
 		}
 		else if (e.type == SDL_MOUSEBUTTONDOWN)
 		{
-			APP_LOG_INFO("Shoot");
+			SDL_PushEvent(&OnCastFireball);
 		}
 	}
 

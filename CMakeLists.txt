@@ -20,6 +20,7 @@ find_package(SDL2_image REQUIRED)
 add_executable(Djipi-App
     "${CMAKE_CURRENT_SOURCE_DIR}/src/App.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/src/Player.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/Fireball.cpp"
 
     "${CMAKE_CURRENT_SOURCE_DIR}/Djipi/core/renderer/Renderer.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/Djipi/core/resource/ResourceManager.cpp"

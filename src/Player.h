@@ -1,6 +1,7 @@
 #pragma once
 
 #include <Djipi.h>
+#include <UserEvents.h>
 
 namespace DjipiApp
 {
@@ -17,5 +18,8 @@ namespace DjipiApp
 		double m_RotAngle;
 
 		void CalculateRotationAngle();
+
+		// Events
+		SDL_Event OnCastFireball = { UserEvents::SPAWN_FIREBALL };
 	};
 }

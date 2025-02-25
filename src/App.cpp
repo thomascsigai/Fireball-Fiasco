@@ -8,7 +8,22 @@
 #include <SDL_ttf.h>
 #include <SDL_mixer.h>
 
+#include <vector>
+
 #include <Player.h>
+#include <Fireball.h>
+#include <UserEvents.h>
+
+void SpawnFireball(const Djipi::Vector2& playerPosition, std::vector<DjipiApp::Fireball>& fireballs)
+{
+	int x, y;
+	SDL_GetMouseState(&x, &y);
+
+	Djipi::Vector2 mousePos = Djipi::Vector2(x, y);
+	Djipi::Vector2 moveDirection = Djipi::Normalize(mousePos - playerPosition);
+
+	fireballs.emplace_back(playerPosition, moveDirection);
+}
 
 int main(int argc, char* argv[])
 {
@@ -38,6 +53,8 @@ int main(int argc, char* argv[])
 	DjipiApp::Player player = DjipiApp::Player();
 	player.SetTexture(resourceManager.GetTexture("resources\\textures\\player.png"));
 
+	std::vector<DjipiApp::Fireball> fireballs = std::vector<DjipiApp::Fireball>();
+
 	// GAME LOOP
 	while (!quit)
 	{
@@ -52,6 +69,10 @@ int main(int argc, char* argv[])
 			{
 				if (e.key.keysym.sym == SDLK_SPACE)
 					resourceManager.ReloadAllResources();
+			}
+			if (e.type == UserEvents::SPAWN_FIREBALL)
+			{
+				SpawnFireball(player.GetTransform2D().position, fireballs);
 			}
 
 			// Handle your events here
@@ -71,6 +92,12 @@ int main(int argc, char* argv[])
 		SDL_SetRenderDrawColor(renderer.GetSDLRenderer(), 0, 0, 0, 255);
 		SDL_RenderClear(renderer.GetSDLRenderer());
 		SDL_SetRenderDrawColor(renderer.GetSDLRenderer(), 255, 255, 255, 255);
+
+		for (DjipiApp::Fireball& fireball : fireballs)
+		{
+			fireball.Update(deltaTime);
+			fireball.Render(renderer.GetSDLRenderer());
+		}
 
 		// Render all objects in the scene here
 
