@@ -38,11 +38,6 @@ int main(int argc, char* argv[])
 	DjipiApp::Player player = DjipiApp::Player();
 	player.SetTexture(resourceManager.GetTexture("resources\\textures\\player.png"));
 
-	SDL_Texture* text = nullptr;
-	SDL_Texture* text2 = nullptr;
-	Djipi::LoadText(text, "Text rendering", 75, resourceManager, renderer, { 255, 255, 255, 255 });
-	Djipi::LoadText(text2, "Text rendering2", 15, resourceManager, renderer, { 255, 255, 255, 255 });
-
 	// GAME LOOP
 	while (!quit)
 	{
@@ -57,10 +52,6 @@ int main(int argc, char* argv[])
 			{
 				if (e.key.keysym.sym == SDLK_SPACE)
 					resourceManager.ReloadAllResources();
-				if (e.key.keysym.sym == SDLK_e)
-					soundManager.PlaySound(resourceManager.GetSound("resources\\sounds\\win1.wav"));
-				if (e.key.keysym.sym == SDLK_r)
-					resourceManager.UnloadAllResources();
 			}
 
 			// Handle your events here
@@ -84,8 +75,6 @@ int main(int argc, char* argv[])
 		// Render all objects in the scene here
 
 		player.Render(renderer.GetSDLRenderer());
-		Djipi::RenderText(text, renderer, 100, 200);
-		Djipi::RenderText(text2, renderer, 500, 500);
 
 		SDL_RenderPresent(renderer.GetSDLRenderer());
 	}

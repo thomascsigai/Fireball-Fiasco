@@ -18,7 +18,7 @@ constexpr Uint16 SCREEN_HEIGHT = 600;
 
 // GAME SPECIFIC SETTINGS -------------------------------------------
 
-constexpr Uint16 PLAYER_SPEED = 100;
+constexpr Uint16 PLAYER_SPEED = 300;
 
 // KEYBINDS ---------------------------------------------------------
 
@@ -31,4 +31,4 @@ struct MoveKeybind
 	SDL_Keycode RIGHT;
 };
 
-constexpr MoveKeybind MOVE_KEYBIND = { SDLK_UP, SDLK_DOWN, SDLK_LEFT, SDLK_RIGHT };
+constexpr MoveKeybind MOVE_KEYBIND = { SDLK_z, SDLK_s, SDLK_q, SDLK_d };
