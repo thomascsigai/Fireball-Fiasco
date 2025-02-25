@@ -34,6 +34,13 @@ namespace DjipiApp
 			};
 			SDL_RenderFillRectF(renderer, &rect);
 		}
+
+#ifndef NDEBUG
+		//Debug draw colliders
+		SDL_SetRenderDrawColor(renderer, 0, 255, 0, 255);
+		SDL_RenderDrawRectF(renderer, &m_Transform.collider);
+		SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
+#endif
 	}
 
 	void Player::HandleEvent(SDL_Event& e)
