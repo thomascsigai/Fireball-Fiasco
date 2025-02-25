@@ -17,6 +17,7 @@ namespace DjipiApp
 	private:
 		double m_RotAngle;
 
+		// Calculate the player rotation angle to face the mouse position.
 		void CalculateRotationAngle();
 
 		// Events

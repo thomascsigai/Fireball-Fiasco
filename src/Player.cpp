@@ -69,9 +69,6 @@ namespace DjipiApp
 		}
 	}
 
-	/*
-	* Calculate the player rotation angle to face the mouse position.
-	*/
 	void Player::CalculateRotationAngle()
 	{
 		//Get mouse position
