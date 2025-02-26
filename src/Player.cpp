@@ -6,7 +6,7 @@ namespace DjipiApp
 	Player::Player()
 	{
 		m_Transform.SetPosition(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2);
-		m_Transform.SetSize(30, 20);
+		m_Transform.SetSize(50, 50);
 
 		m_RotAngle = 0;
 		m_Lives = 3;

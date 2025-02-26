@@ -135,7 +135,7 @@ int main(int argc, char* argv[])
 		factory.Update(deltaTime);
 
 		// RENDERING 
-		SDL_SetRenderDrawColor(renderer.GetSDLRenderer(), 0, 0, 0, 255);
+		SDL_SetRenderDrawColor(renderer.GetSDLRenderer(), 19, 2, 8, 255);
 		SDL_RenderClear(renderer.GetSDLRenderer());
 		SDL_SetRenderDrawColor(renderer.GetSDLRenderer(), 255, 255, 255, 255);
 

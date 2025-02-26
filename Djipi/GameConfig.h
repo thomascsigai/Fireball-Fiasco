@@ -27,7 +27,7 @@ const size_t MAX_FIREBALLS_NUMBER = 50;
 
 constexpr Uint16 ENEMY_SIZE = 30;
 constexpr Uint16 ENEMY_SPEED = 200;
-constexpr Uint16 ENEMY_BASE_SPAWN_TIME = 5000;
+constexpr Uint16 ENEMY_BASE_SPAWN_TIME = 3000;
 constexpr Uint16 ENEMY_MIN_SPAWN_TIME = 1000;
 
 // KEYBINDS ---------------------------------------------------------
