@@ -4,6 +4,7 @@
 #include <Enemy.h>
 
 #include <algorithm>
+#include <random>
 
 namespace DjipiApp
 {
@@ -11,7 +12,7 @@ namespace DjipiApp
 	{
 	public:
 		EnemyFactory(std::vector<DjipiApp::Enemy>& enemies)
-			: m_EnemiesRef(enemies)
+			: m_EnemiesRef(enemies), m_Gen(std::random_device{}())
 		{
 			m_RespawnTimer.Start();
 			m_TimerModifier = 0;
@@ -25,10 +26,7 @@ namespace DjipiApp
 			if (m_RespawnTimer.GetTicks() > modifier)
 			{
 				m_RespawnTimer.Stop();
-
-				// Spawn enemy
-				m_EnemiesRef.emplace_back(Djipi::Vector2(0, 0));
-
+				SpawnEnemy();
 				m_RespawnTimer.Start();
 			}
 		}
@@ -37,5 +35,25 @@ namespace DjipiApp
 		Djipi::Timer m_RespawnTimer;
 
 		Uint32 m_TimerModifier;
+		std::mt19937 m_Gen;
+
+		void SpawnEnemy()
+		{
+			// Spawn enemy
+			float posX, posY;
+			std::uniform_int_distribution<int> xPosRange(-100, SCREEN_WIDTH + 100);
+			std::uniform_int_distribution<int> yTopRange(-100, -10);
+			std::uniform_int_distribution<int> yBottomRange(SCREEN_HEIGHT + 10, SCREEN_HEIGHT + 100);
+
+			// yRange:
+			// 0: Enemy spawn in top offside of the screen
+			// 1: Enemy spawn in bottom offside of the screen
+			std::uniform_int_distribution<int> yRange(0, 1);
+			
+			posX = xPosRange(m_Gen);
+			yRange(m_Gen) == 0 ? posY = yTopRange(m_Gen) : posY = yBottomRange(m_Gen);
+
+			m_EnemiesRef.emplace_back(Djipi::Vector2(posX, posY));
+		}
 	};
 }
