@@ -12,14 +12,15 @@ namespace DjipiApp
 
 		void Update(double deltaTime) override;
 
-		void CollideEnemy()
-		{
-			m_SavedVelocity = m_Velocity;
-			m_Velocity.x = 0;
-			m_Velocity.y = 0;
-		}
+		void CollideEnemy();
+		bool IsUnstable() const;
 
 	private:
 		Djipi::Vector2 m_SavedVelocity;
+		Djipi::Timer m_UnstableTimer;
+
+		bool m_IsUnstable;
+
+		void BecomeUnstable();
 	};
 }

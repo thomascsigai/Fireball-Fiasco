@@ -9,6 +9,7 @@ namespace DjipiApp
 		m_Transform.SetSize(30, 20);
 
 		m_RotAngle = 0;
+		m_Lives = 3;
 	}
 
 	void Player::Update(double deltaTime)
@@ -84,6 +85,16 @@ namespace DjipiApp
 		if (mousePos.x < centerPlayer.x)
 		{
 			m_RotAngle *= -1;
+		}
+	}
+
+	void Player::LooseLife()
+	{
+		APP_LOG_INFO("Player loose lifes");
+		
+		if (--m_Lives <= 0)
+		{
+			APP_LOG_INFO("Player died");
 		}
 	}
 }

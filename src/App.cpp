@@ -93,16 +93,36 @@ int main(int argc, char* argv[])
 		
 		for (DjipiApp::Fireball& fireball : fireballs)
 		{
-			enemies.erase(std::remove_if(enemies.begin(), enemies.end(),
-				[&fireball](const DjipiApp::Enemy& enemy) {
-					if (Djipi::CheckCollisionAABB(enemy.GetCollider(), fireball.GetCollider()))
-					{
-						fireball.CollideEnemy();
-						return true;
-					}
-					return false;
-				}), enemies.end());
+			if (!fireball.IsUnstable())
+			{
+				enemies.erase(std::remove_if(enemies.begin(), enemies.end(),
+					[&fireball](const DjipiApp::Enemy& enemy) {
+						if (Djipi::CheckCollisionAABB(enemy.GetCollider(), fireball.GetCollider()))
+						{
+							fireball.CollideEnemy();
+							return true;
+						}
+						return false;
+					}), enemies.end());
+			}
+			else
+			{
+				if (Djipi::CheckCollisionAABB(player.GetCollider(), fireball.GetCollider()))
+				{
+					player.LooseLife();
+				}
+			}
 		}
+
+		enemies.erase(std::remove_if(enemies.begin(), enemies.end(),
+			[&player](const DjipiApp::Enemy& enemy) {
+				if (Djipi::CheckCollisionAABB(enemy.GetCollider(), player.GetCollider()))
+				{
+					player.LooseLife();
+					return true;
+				}
+				return false;
+			}), enemies.end());
 
 		currentTime = SDL_GetTicks();
 		deltaTime = (double)(currentTime - previousTime) / 1000;

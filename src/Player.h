@@ -14,8 +14,11 @@ namespace DjipiApp
 		void HandleEvent(SDL_Event& e) override;
 		void Render(SDL_Renderer* renderer) override;
 
+		void LooseLife();
+
 	private:
 		double m_RotAngle;
+		Uint16 m_Lives;
 
 		// Calculate the player rotation angle to face the mouse position.
 		void CalculateRotationAngle();
