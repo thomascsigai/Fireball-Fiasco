@@ -16,6 +16,8 @@ namespace DjipiApp
 		{
 			m_RespawnTimer.Start();
 			m_TimerModifier = 0;
+
+			SpawnEnemy();
 		}
 
 		void Update(double deltaTime)
