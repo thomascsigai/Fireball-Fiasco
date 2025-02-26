@@ -20,6 +20,11 @@ namespace DjipiApp
 			m_MoveDestination = Djipi::Vector2(0, 0);
 		}
 
+		~Enemy()
+		{
+			APP_LOG_INFO("Ennemi die");
+		}
+
 		void Update(double deltaTime) override
 		{
 			Djipi::Vector2 moveDirection = Djipi::Normalize(m_MoveDestination - m_Transform.position);
@@ -31,6 +36,10 @@ namespace DjipiApp
 		void UpdateDestination(Djipi::Vector2 destination)
 		{
 			m_MoveDestination = destination;
+		}
+
+		size_t GetUID() const {
+			return m_UID;
 		}
 
 	private:

@@ -89,6 +89,21 @@ int main(int argc, char* argv[])
 			player.HandleEvent(e);
 		}
 
+		// COLLISION CHECKING
+		
+		for (DjipiApp::Fireball& fireball : fireballs)
+		{
+			enemies.erase(std::remove_if(enemies.begin(), enemies.end(),
+				[&fireball](const DjipiApp::Enemy& enemy) {
+					if (Djipi::CheckCollisionAABB(enemy.GetCollider(), fireball.GetCollider()))
+					{
+						fireball.CollideEnemy();
+						return true;
+					}
+					return false;
+				}), enemies.end());
+		}
+
 		currentTime = SDL_GetTicks();
 		deltaTime = (double)(currentTime - previousTime) / 1000;
 		previousTime = currentTime;
