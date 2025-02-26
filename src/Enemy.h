@@ -11,6 +11,9 @@ namespace DjipiApp
 
 		Enemy(Djipi::Vector2 position)
 		{
+			static int counter = 0;
+			m_UID = counter++;
+
 			m_Transform.SetPosition(position.x, position.y);
 			m_Transform.SetSize(ENEMY_SIZE, ENEMY_SIZE);
 
@@ -31,6 +34,7 @@ namespace DjipiApp
 		}
 
 	private:
+		size_t m_UID;
 		Djipi::Vector2 m_MoveDestination;
 	};
 }

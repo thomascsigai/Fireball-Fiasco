@@ -14,6 +14,7 @@
 #include <Player.h>
 #include <Fireball.h>
 #include <Enemy.h>
+#include <EnemyFactory.h>
 
 void SpawnFireball(const Djipi::Vector2& playerPosition, const Djipi::Vector2& playerSize, std::array<DjipiApp::Fireball, MAX_FIREBALLS_NUMBER>& fireballs)
 {
@@ -59,10 +60,10 @@ int main(int argc, char* argv[])
 	DjipiApp::Player player = DjipiApp::Player();
 	player.SetTexture(resourceManager.GetTexture("resources\\textures\\player.png"));
 
-	DjipiApp::Enemy enemy = DjipiApp::Enemy(Djipi::Vector2(500, 500));
+	std::array<DjipiApp::Fireball, MAX_FIREBALLS_NUMBER> fireballs;
+	std::vector<DjipiApp::Enemy> enemies;
 
-	const size_t MAX_FIREBALLS = 50;
-	std::array<DjipiApp::Fireball, MAX_FIREBALLS> fireballs;
+	DjipiApp::EnemyFactory factory = DjipiApp::EnemyFactory(enemies);
 
 	// GAME LOOP
 	while (!quit)
@@ -96,8 +97,7 @@ int main(int argc, char* argv[])
 		// Updates methods here
 
 		player.Update(deltaTime);
-		enemy.UpdateDestination(player.GetTransform2D().position);
-		enemy.Update(deltaTime);
+		factory.Update(deltaTime);
 
 		// RENDERING 
 		SDL_SetRenderDrawColor(renderer.GetSDLRenderer(), 0, 0, 0, 255);
@@ -110,10 +110,16 @@ int main(int argc, char* argv[])
 			fireball.Render(renderer.GetSDLRenderer());
 		}
 
+		for (DjipiApp::Enemy& enemy : enemies)
+		{
+			enemy.UpdateDestination(player.GetTransform2D().position);
+			enemy.Update(deltaTime);
+			enemy.Render(renderer.GetSDLRenderer());
+		}
+
 		// Render all objects in the scene here
 
 		player.Render(renderer.GetSDLRenderer());
-		enemy.Render(renderer.GetSDLRenderer());
 
 		SDL_RenderPresent(renderer.GetSDLRenderer());
 	}
