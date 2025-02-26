@@ -24,6 +24,9 @@ constexpr Uint16 FIREBALL_SPEED = 500;
 constexpr Uint16 FIREBALL_SIZE = 10;
 const size_t MAX_FIREBALLS_NUMBER = 50;
 
+constexpr Uint16 ENEMY_SIZE = 30;
+constexpr Uint16 ENEMY_SPEED = 200;
+
 // KEYBINDS ---------------------------------------------------------
 
 // Paddles keybinds

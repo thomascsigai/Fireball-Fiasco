@@ -3,6 +3,7 @@
 
 #include <GameConfig.h>
 #include <Djipi.h>
+#include <UserEvents.h>
 
 #include <SDL.h>
 #include <SDL_ttf.h>
@@ -12,7 +13,7 @@
 
 #include <Player.h>
 #include <Fireball.h>
-#include <UserEvents.h>
+#include <Enemy.h>
 
 void SpawnFireball(const Djipi::Vector2& playerPosition, const Djipi::Vector2& playerSize, std::array<DjipiApp::Fireball, MAX_FIREBALLS_NUMBER>& fireballs)
 {
@@ -58,6 +59,8 @@ int main(int argc, char* argv[])
 	DjipiApp::Player player = DjipiApp::Player();
 	player.SetTexture(resourceManager.GetTexture("resources\\textures\\player.png"));
 
+	DjipiApp::Enemy enemy = DjipiApp::Enemy(Djipi::Vector2(500, 500));
+
 	const size_t MAX_FIREBALLS = 50;
 	std::array<DjipiApp::Fireball, MAX_FIREBALLS> fireballs;
 
@@ -93,6 +96,8 @@ int main(int argc, char* argv[])
 		// Updates methods here
 
 		player.Update(deltaTime);
+		enemy.UpdateDestination(player.GetTransform2D().position);
+		enemy.Update(deltaTime);
 
 		// RENDERING 
 		SDL_SetRenderDrawColor(renderer.GetSDLRenderer(), 0, 0, 0, 255);
@@ -108,6 +113,7 @@ int main(int argc, char* argv[])
 		// Render all objects in the scene here
 
 		player.Render(renderer.GetSDLRenderer());
+		enemy.Render(renderer.GetSDLRenderer());
 
 		SDL_RenderPresent(renderer.GetSDLRenderer());
 	}
