@@ -34,6 +34,30 @@ void SpawnFireball(const Djipi::Vector2& playerPosition, const Djipi::Vector2& p
 	index = (index + 1) % MAX_FIREBALLS_NUMBER;
 }
 
+void RenderGround(Djipi::Renderer& renderer, Djipi::ResourceManager& resourceManager)
+{
+	const int textureSize = 64;
+	int numOfColumns = SCREEN_WIDTH / textureSize + 1;
+	int numOfLines = SCREEN_HEIGHT / textureSize + 1;
+
+	std::shared_ptr<Djipi::Texture> texture = resourceManager.GetTexture("resources\\textures\\groundtexture.png");
+
+	if (texture == nullptr)
+	{
+		APP_LOG_INFO("Could not render ground.");
+		return;
+	}
+
+	for (int i = 0; i < numOfLines; i++)
+	{
+		for (int j = 0; j < numOfColumns; j++)
+		{
+			SDL_Rect rect = {j * textureSize, i * textureSize, textureSize, textureSize };
+			SDL_RenderCopy(renderer.GetSDLRenderer(), texture->GetSDLTexture(), NULL, &rect);
+		}
+	}
+}
+
 int main(int argc, char* argv[])
 {
 	if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO) < 0)
@@ -140,6 +164,8 @@ int main(int argc, char* argv[])
 		SDL_SetRenderDrawColor(renderer.GetSDLRenderer(), 240, 240, 240, 255);
 		SDL_RenderClear(renderer.GetSDLRenderer());
 		SDL_SetRenderDrawColor(renderer.GetSDLRenderer(), 255, 255, 255, 255);
+
+		RenderGround(renderer, resourceManager);
 
 		for (DjipiApp::Fireball& fireball : fireballs)
 		{
