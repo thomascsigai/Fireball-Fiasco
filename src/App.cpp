@@ -16,7 +16,8 @@
 #include <Enemy.h>
 #include <EnemyFactory.h>
 
-void SpawnFireball(const Djipi::Vector2& playerPosition, const Djipi::Vector2& playerSize, std::array<DjipiApp::Fireball, MAX_FIREBALLS_NUMBER>& fireballs)
+void SpawnFireball(const Djipi::Vector2& playerPosition, const Djipi::Vector2& playerSize,
+	std::array<DjipiApp::Fireball, MAX_FIREBALLS_NUMBER>& fireballs, Djipi::ResourceManager& resourceManager)
 {
 	static size_t index = 0;
 
@@ -29,6 +30,7 @@ void SpawnFireball(const Djipi::Vector2& playerPosition, const Djipi::Vector2& p
 	Djipi::Vector2 fireballPosition = playerPosition + (playerSize / 2) - Djipi::Vector2(FIREBALL_SIZE / 2, FIREBALL_SIZE / 2);
 
 	fireballs[index] = DjipiApp::Fireball(fireballPosition, moveDirection);
+	fireballs[index].SetTexture(resourceManager.GetTexture("resources\\textures\\fireball.png"));
 	index = (index + 1) % MAX_FIREBALLS_NUMBER;
 }
 
@@ -63,7 +65,7 @@ int main(int argc, char* argv[])
 	std::array<DjipiApp::Fireball, MAX_FIREBALLS_NUMBER> fireballs;
 	std::vector<DjipiApp::Enemy> enemies;
 
-	DjipiApp::EnemyFactory factory = DjipiApp::EnemyFactory(enemies);
+	DjipiApp::EnemyFactory factory = DjipiApp::EnemyFactory(enemies, &resourceManager);
 
 	// GAME LOOP
 	while (!quit)
@@ -82,7 +84,7 @@ int main(int argc, char* argv[])
 			}
 			if (e.type == UserEvents::SPAWN_FIREBALL)
 			{
-				SpawnFireball(player.GetTransform2D().position, player.GetTransform2D().size, fireballs);
+				SpawnFireball(player.GetTransform2D().position, player.GetTransform2D().size, fireballs, resourceManager);
 			}
 
 			// Handle your events here
@@ -135,7 +137,7 @@ int main(int argc, char* argv[])
 		factory.Update(deltaTime);
 
 		// RENDERING 
-		SDL_SetRenderDrawColor(renderer.GetSDLRenderer(), 19, 2, 8, 255);
+		SDL_SetRenderDrawColor(renderer.GetSDLRenderer(), 240, 240, 240, 255);
 		SDL_RenderClear(renderer.GetSDLRenderer());
 		SDL_SetRenderDrawColor(renderer.GetSDLRenderer(), 255, 255, 255, 255);
 

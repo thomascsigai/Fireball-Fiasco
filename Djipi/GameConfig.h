@@ -19,9 +19,10 @@ constexpr Uint16 SCREEN_HEIGHT = 600;
 // GAME SPECIFIC SETTINGS -------------------------------------------
 
 constexpr Uint16 PLAYER_SPEED = 300;
+constexpr Uint16 PLAYER_SIZE = 30;
 
 constexpr Uint16 FIREBALL_SPEED = 500;
-constexpr Uint16 FIREBALL_SIZE = 10;
+constexpr Uint16 FIREBALL_SIZE = 30;
 constexpr Uint16 TIME_BEFORE_UNSTABLE = 3000; // In ms
 const size_t MAX_FIREBALLS_NUMBER = 50;
 
