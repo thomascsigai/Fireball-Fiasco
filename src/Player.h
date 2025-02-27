@@ -16,9 +16,14 @@ namespace DjipiApp
 
 		void LooseLife();
 
+		bool IsGhost() const;
+
 	private:
 		double m_RotAngle;
 		Uint16 m_Lives;
+
+		Djipi::Timer m_GhostTimer;
+		bool m_IsGhost;
 
 		// Calculate the player rotation angle to face the mouse position.
 		void CalculateRotationAngle();

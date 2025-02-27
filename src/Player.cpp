@@ -10,16 +10,26 @@ namespace DjipiApp
 
 		m_RotAngle = 0;
 		m_Lives = 3;
+		m_IsGhost = false;
 	}
 
 	void Player::Update(double deltaTime)
 	{
+		if (m_IsGhost)
+		{
+			if (m_GhostTimer.GetTicks() > GHOST_DURATION)
+			{
+				m_IsGhost = false;
+			}
+		}
+
 		GameObject::Move(deltaTime);
 	}
 
 	void Player::Render(SDL_Renderer* renderer)
 	{
-		if (auto texture = m_Texture.lock())
+		auto texture = m_Texture.lock();
+		if (texture && !m_IsGhost)
 		{
 			SDL_Rect rect = {
 		m_Transform.position.x, m_Transform.position.y,
@@ -90,11 +100,25 @@ namespace DjipiApp
 
 	void Player::LooseLife()
 	{
+		if (m_GhostTimer.IsStarted() && m_GhostTimer.GetTicks() < GHOST_DURATION)
+		{
+			APP_LOG_INFO("Player is ghost");
+			return;
+		}
+		m_GhostTimer.Stop();
+		m_GhostTimer.Start();
+		
+		m_IsGhost = true;
 		APP_LOG_INFO("Player loose lifes");
 		
 		if (--m_Lives <= 0)
 		{
 			APP_LOG_INFO("Player died");
 		}
+	}
+
+	bool Player::IsGhost() const
+	{
+		return m_IsGhost;
 	}
 }

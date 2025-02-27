@@ -94,6 +94,10 @@ int main(int argc, char* argv[])
 	// GAME LOOP
 	while (!quit)
 	{
+		currentTime = SDL_GetTicks();
+		deltaTime = (double)(currentTime - previousTime) / 1000;
+		previousTime = currentTime;
+
 		// EVENTS LOOP
 		while (SDL_PollEvent(&e) != 0)
 		{
@@ -133,7 +137,7 @@ int main(int argc, char* argv[])
 			}
 			else
 			{
-				if (Djipi::CheckCollisionAABB(player.GetCollider(), fireball.GetCollider()))
+				if (Djipi::CheckCollisionAABB(player.GetCollider(), fireball.GetCollider()) && !player.IsGhost())
 				{
 					player.LooseLife();
 				}
@@ -142,17 +146,13 @@ int main(int argc, char* argv[])
 
 		enemies.erase(std::remove_if(enemies.begin(), enemies.end(),
 			[&player](const DjipiApp::Enemy& enemy) {
-				if (Djipi::CheckCollisionAABB(enemy.GetCollider(), player.GetCollider()))
+				if (Djipi::CheckCollisionAABB(enemy.GetCollider(), player.GetCollider()) && !player.IsGhost())
 				{
 					player.LooseLife();
 					return true;
 				}
 				return false;
 			}), enemies.end());
-
-		currentTime = SDL_GetTicks();
-		deltaTime = (double)(currentTime - previousTime) / 1000;
-		previousTime = currentTime;
 
 		// UPDATING
 		// Updates methods here
@@ -166,7 +166,7 @@ int main(int argc, char* argv[])
 		SDL_SetRenderDrawColor(renderer.GetSDLRenderer(), 255, 255, 255, 255);
 
 		RenderGround(renderer, resourceManager);
-
+		 
 		for (DjipiApp::Fireball& fireball : fireballs)
 		{
 			fireball.Update(deltaTime);

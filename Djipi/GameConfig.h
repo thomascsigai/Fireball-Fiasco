@@ -20,6 +20,7 @@ constexpr Uint16 SCREEN_HEIGHT = 600;
 
 constexpr Uint16 PLAYER_SPEED = 300;
 constexpr Uint16 PLAYER_SIZE = 30;
+constexpr Uint16 GHOST_DURATION = 3000;
 
 constexpr Uint16 FIREBALL_SPEED = 500;
 constexpr Uint16 FIREBALL_SIZE = 30;

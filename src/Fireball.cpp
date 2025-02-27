@@ -26,11 +26,14 @@ namespace DjipiApp
 
 	void Fireball::CollideEnemy()
 	{
-		m_SavedVelocity = m_Velocity;
-		m_Velocity.x = 0;
-		m_Velocity.y = 0;
+		if (!m_UnstableTimer.IsStarted())
+		{
+			m_SavedVelocity = m_Velocity;
+			m_Velocity.x = 0;
+			m_Velocity.y = 0;
 
-		m_UnstableTimer.Start();
+			m_UnstableTimer.Start();
+		}
 	}
 
 	void Fireball::BecomeUnstable()
