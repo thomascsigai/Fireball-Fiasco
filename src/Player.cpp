@@ -76,7 +76,10 @@ namespace DjipiApp
 		}
 		else if (e.type == SDL_MOUSEBUTTONDOWN)
 		{
-			SDL_PushEvent(&OnCastFireball);
+			if (!m_IsGhost)
+			{
+				SDL_PushEvent(&OnCastFireball);
+			}
 		}
 	}
 
