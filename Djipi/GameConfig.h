@@ -7,6 +7,8 @@
 constexpr Uint16 SCREEN_WIDTH = 950;
 constexpr Uint16 SCREEN_HEIGHT = 900;
 
+constexpr Uint16 SPLASH_SCREEN_TIME = 3000;
+
 
 // RESOURCES SETTINGS ---------------------------------------------------
 

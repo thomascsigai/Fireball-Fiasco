@@ -132,12 +132,19 @@ namespace DjipiApp
 		m_GhostTimer.Start();
 		
 		m_IsGhost = true;
-		APP_LOG_INFO("Player loose lifes");
 		
 		if (--m_Lives <= 0)
 		{
-			APP_LOG_INFO("Player died");
+			SDL_PushEvent(&OnPlayerDie);
 		}
+	}
+
+	void Player::Reset()
+	{
+		m_Transform.SetPosition(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2);
+		m_RotAngle = 0;
+		m_Lives = 3;
+		m_IsGhost = false;
 	}
 
 	bool Player::IsGhost() const

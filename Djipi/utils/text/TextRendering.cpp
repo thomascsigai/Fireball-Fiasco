@@ -10,7 +10,7 @@ namespace Djipi
 			textPtr = nullptr;
 		}
 
-		std::shared_ptr<Djipi::Font> font = resources.GetFont("resources\\fonts\\bit5x3.ttf");
+		std::shared_ptr<Djipi::Font> font = resources.GetFont("resources\\fonts\\optimus.ttf");
 		if (font == nullptr)
 		{
 			LOG_WARN("Font not found.");

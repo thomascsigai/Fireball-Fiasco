@@ -15,6 +15,7 @@ namespace DjipiApp
 		void Render(SDL_Renderer* renderer) override;
 
 		void LooseLife();
+		void Reset();
 
 		bool IsGhost() const;
 		Uint16 GetLives() const;
@@ -31,5 +32,6 @@ namespace DjipiApp
 
 		// Events
 		SDL_Event OnCastFireball = { UserEvents::SPAWN_FIREBALL };
+		SDL_Event OnPlayerDie = { UserEvents::PLAYER_DIE };
 	};
 }

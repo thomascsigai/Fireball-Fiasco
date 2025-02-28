@@ -14,10 +14,21 @@ namespace DjipiApp
 		EnemyFactory(std::vector<DjipiApp::Enemy>& enemies, Djipi::ResourceManager* resourceManager = nullptr)
 			: m_EnemiesRef(enemies), m_Gen(std::random_device{}()), ptr_ResourceManager(resourceManager)
 		{
+			m_TimerModifier = 0;
+		}
+
+		void Start()
+		{
 			m_RespawnTimer.Start();
+			SpawnEnemy();
+		}
+
+		void Reset()
+		{
+			m_RespawnTimer.Stop();
 			m_TimerModifier = 0;
 
-			SpawnEnemy();
+			m_EnemiesRef.clear();
 		}
 
 		void Update(double deltaTime)

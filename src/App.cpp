@@ -72,6 +72,91 @@ void RenderOverlay(Djipi::Renderer& renderer, Djipi::ResourceManager& resourceMa
 	SDL_RenderCopy(renderer.GetSDLRenderer(), texture->GetSDLTexture(), NULL, &rect);
 }
 
+void RenderOverlayGround(Djipi::Renderer& renderer, Djipi::ResourceManager& resourceManager)
+{
+	std::shared_ptr<Djipi::Texture> texture = resourceManager.GetTexture("resources\\textures\\groundoverlay.png");
+
+	if (texture == nullptr)
+	{
+		APP_LOG_INFO("Could not render overlay ground.");
+		return;
+	}
+
+	SDL_Rect rect = { 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT };
+	SDL_RenderCopy(renderer.GetSDLRenderer(), texture->GetSDLTexture(), NULL, &rect);
+}
+
+void UpdateScore(const Uint32& score, SDL_Texture*& scoreTexture, Djipi::Renderer& renderer, Djipi::ResourceManager& resourceManager)
+{
+	std::string scoreStr;
+	if (score < 10)
+	{
+		scoreStr += "00";
+	}
+	else if (score < 100)
+	{
+		scoreStr += "0";
+	}
+
+	Djipi::LoadText(scoreTexture, scoreStr + std::to_string(score), 75, resourceManager, renderer, {255, 255, 255, 255});
+}
+
+void RenderLives(const Uint16& lives, int x, int y, Djipi::Renderer& renderer, Djipi::ResourceManager& resourceManager)
+{
+	const int textureSize = 64;
+
+	std::shared_ptr<Djipi::Texture> textureHeartFull = resourceManager.GetTexture("resources\\textures\\heartfull.png");
+	std::shared_ptr<Djipi::Texture> textureHeartEmpty = resourceManager.GetTexture("resources\\textures\\heartempty.png");
+
+	if (!textureHeartFull || !textureHeartEmpty)
+	{
+		APP_LOG_WARN("Could not render lives hearts.");
+		return;
+	}
+
+	SDL_Rect rect = { x, y, textureSize, textureSize };
+	SDL_Texture* textureToRender;
+
+	textureToRender = lives >= 1 ? textureHeartFull->GetSDLTexture() : textureHeartEmpty->GetSDLTexture();
+	SDL_RenderCopy(renderer.GetSDLRenderer(), textureToRender, NULL, &rect);
+
+	rect = { x + textureSize, y, textureSize, textureSize };
+	textureToRender = lives >= 2 ? textureHeartFull->GetSDLTexture() : textureHeartEmpty->GetSDLTexture();
+	SDL_RenderCopy(renderer.GetSDLRenderer(), textureToRender, NULL, &rect);
+
+	rect = { x + textureSize * 2, y, textureSize, textureSize };
+	textureToRender = lives == 3 ? textureHeartFull->GetSDLTexture() : textureHeartEmpty->GetSDLTexture();
+	SDL_RenderCopy(renderer.GetSDLRenderer(), textureToRender, NULL, &rect);
+}
+
+void RenderMenu(Djipi::Renderer& renderer, Djipi::ResourceManager& resourceManager)
+{
+	std::shared_ptr<Djipi::Texture> texture = resourceManager.GetTexture("resources\\textures\\intro.png");
+
+	if (texture == nullptr)
+	{
+		APP_LOG_INFO("Could not render menu.");
+		return;
+	}
+
+	SDL_Rect rect = { 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT };
+	SDL_RenderCopy(renderer.GetSDLRenderer(), texture->GetSDLTexture(), NULL, &rect);
+}
+
+void RenderSplash(Djipi::Renderer& renderer, Djipi::ResourceManager& resourceManager)
+{
+	std::shared_ptr<Djipi::Texture> texture = resourceManager.GetTexture("resources\\textures\\intro2.png");
+
+	if (texture == nullptr)
+	{
+		APP_LOG_INFO("Could not splash screen.");
+		return;
+	}
+
+	SDL_Rect rect = { 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT };
+	SDL_RenderCopy(renderer.GetSDLRenderer(), texture->GetSDLTexture(), NULL, &rect);
+}
+
 int main(int argc, char* argv[])
 {
 	if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO) < 0)
@@ -94,6 +179,13 @@ int main(int argc, char* argv[])
 	Uint64 currentTime;
 	double deltaTime;
 
+	bool game = false;
+	bool menu = false;
+	bool splash = true;
+
+	Djipi::Timer splashTimer;
+	splashTimer.Start();
+
 	// GAMEOBJECTS
 	// Create your gameobjects here
 	
@@ -111,6 +203,11 @@ int main(int argc, char* argv[])
 	// Events
 	SDL_Event OnPlayerHit = { UserEvents::PLAYER_HIT };
 
+	// GAME VARIABLES
+	Uint32 score = 0;
+	SDL_Texture* scoreTexture = nullptr;
+	Djipi::LoadText(scoreTexture, "000", 75, resourceManager, renderer, { 255, 255, 255, 255 });
+
 	// GAME LOOP
 	while (!quit)
 	{
@@ -118,108 +215,201 @@ int main(int argc, char* argv[])
 		deltaTime = (double)(currentTime - previousTime) / 1000;
 		previousTime = currentTime;
 
-		// EVENTS LOOP
-		while (SDL_PollEvent(&e) != 0)
+		if (splash)
 		{
-			if (e.type == SDL_QUIT)
+			#pragma region SPLASH
+
+			// EVENTS LOOP
+			while (SDL_PollEvent(&e) != 0)
 			{
-				quit = true;
-			}
-			if (e.type == SDL_KEYDOWN && e.key.repeat == 0)
-			{
-				if (e.key.keysym.sym == SDLK_SPACE)
-					resourceManager.ReloadAllResources();
-			}
-			if (e.type == UserEvents::SPAWN_FIREBALL)
-			{
-				SpawnFireball(player.GetTransform2D().position, player.GetTransform2D().size, fireballs, resourceManager);
-				soundManager.PlaySound(resourceManager.GetSound("resources\\sounds\\fireball.wav"));
-			}
-			if (e.type == UserEvents::PLAYER_HIT)
-			{
-				player.LooseLife();
-				soundManager.PlaySound(resourceManager.GetSound("resources\\sounds\\lostlive.wav"));
-			}
-			if (e.type == UserEvents::ENEMY_DIE)
-			{
-				soundManager.PlaySound(resourceManager.GetSound("resources\\sounds\\ennemideath.wav"));
-			}
-			if (e.type == UserEvents::FIREBALL_UNSTABLE)
-			{
-				soundManager.PlaySound(resourceManager.GetSound("resources\\sounds\\cursedFireball.wav"));
+				if (e.type == SDL_QUIT)
+				{
+					quit = true;
+				}
+				if (e.type == SDL_KEYDOWN && e.key.repeat == 0)
+				{
+					if (e.key.keysym.sym == SDLK_SPACE)
+					{
+						splash = false;
+						menu = true;
+						game = false;
+					}
+				}
 			}
 
-			// Handle your events here
-			player.HandleEvent(e);
+			RenderSplash(renderer, resourceManager);
+
+			if (splashTimer.GetTicks() >= SPLASH_SCREEN_TIME)
+			{
+				splashTimer.Stop();
+				splash = false;
+				menu = true;
+				game = false;
+			}
+
+			#pragma endregion
+
 		}
 
-		// COLLISION CHECKING
+		if (menu)
+		{
+			#pragma region MENU
+			
+			// EVENTS LOOP
+			while (SDL_PollEvent(&e) != 0)
+			{
+				if (e.type == SDL_QUIT)
+				{
+					quit = true;
+				}
+				if (e.type == SDL_KEYDOWN && e.key.repeat == 0)
+				{
+					if (e.key.keysym.sym == SDLK_SPACE)
+					{
+						menu = false;
+						game = true;
+
+						factory.Start();
+					}
+				}
+			}
+
+			RenderMenu(renderer, resourceManager);
+			RenderOverlay(renderer, resourceManager);
+
+			#pragma endregion
+		}
+
+		if (game)
+		{
+			#pragma region GAME
+
+			// EVENTS LOOP
+			while (SDL_PollEvent(&e) != 0)
+			{
+				if (e.type == SDL_QUIT)
+				{
+					quit = true;
+				}
+#ifndef NDEBUG
+				if (e.type == SDL_KEYDOWN && e.key.repeat == 0)
+				{
+					if (e.key.keysym.sym == SDLK_SPACE)
+						resourceManager.ReloadAllResources();
+				}
+#endif
+				if (e.type == UserEvents::SPAWN_FIREBALL)
+				{
+					SpawnFireball(player.GetTransform2D().position, player.GetTransform2D().size, fireballs, resourceManager);
+					soundManager.PlaySound(resourceManager.GetSound("resources\\sounds\\fireball.wav"));
+				}
+				if (e.type == UserEvents::PLAYER_HIT)
+				{
+					player.LooseLife();
+					soundManager.PlaySound(resourceManager.GetSound("resources\\sounds\\lostlive.wav"));
+				}
+				if (e.type == UserEvents::ENEMY_DIE)
+				{
+					soundManager.PlaySound(resourceManager.GetSound("resources\\sounds\\ennemideath.wav"));
+					soundManager.PlaySound(resourceManager.GetSound("resources\\sounds\\point.wav"));
+					score++;
+					UpdateScore(score, scoreTexture, renderer, resourceManager);
+				}
+				if (e.type == UserEvents::FIREBALL_UNSTABLE)
+				{
+					soundManager.PlaySound(resourceManager.GetSound("resources\\sounds\\cursedFireball.wav"));
+				}
+				if (e.type == UserEvents::PLAYER_DIE)
+				{
+					soundManager.PlaySound(resourceManager.GetSound("resources\\sounds\\death.wav"));
+					player.Reset();
+					factory.Reset();
+
+					game = false;
+					menu = true;
+				}
+
+				// Handle your events here
+				player.HandleEvent(e);
+			}
+
+			// COLLISION CHECKING
 		
-		for (DjipiApp::Fireball& fireball : fireballs)
-		{
-			if (!fireball.IsUnstable())
+			for (DjipiApp::Fireball& fireball : fireballs)
 			{
-				enemies.erase(std::remove_if(enemies.begin(), enemies.end(),
-					[&fireball](const DjipiApp::Enemy& enemy) {
-						if (Djipi::CheckCollisionAABB(enemy.GetCollider(), fireball.GetCollider()))
-						{
-							fireball.CollideEnemy();
-							return true;
-						}
-						return false;
-					}), enemies.end());
-			}
-			else
-			{
-				if (Djipi::CheckCollisionAABB(player.GetCollider(), fireball.GetCollider()) && !player.IsGhost())
+				if (!fireball.IsUnstable())
 				{
-					SDL_PushEvent(&OnPlayerHit);
+					enemies.erase(std::remove_if(enemies.begin(), enemies.end(),
+						[&fireball](const DjipiApp::Enemy& enemy) {
+							if (Djipi::CheckCollisionAABB(enemy.GetCollider(), fireball.GetCollider()))
+							{
+								fireball.CollideEnemy();
+								SDL_Event OnEnemyDie = { UserEvents::ENEMY_DIE };
+								SDL_PushEvent(&OnEnemyDie);
+								return true;
+							}
+							return false;
+						}), enemies.end());
+				}
+				else
+				{
+					if (Djipi::CheckCollisionAABB(player.GetCollider(), fireball.GetCollider()) && !player.IsGhost())
+					{
+						SDL_PushEvent(&OnPlayerHit);
+					}
 				}
 			}
-		}
 
-		enemies.erase(std::remove_if(enemies.begin(), enemies.end(),
-			[&player, &OnPlayerHit](const DjipiApp::Enemy& enemy) {
-				if (Djipi::CheckCollisionAABB(enemy.GetCollider(), player.GetCollider()) && !player.IsGhost())
-				{
-					SDL_PushEvent(&OnPlayerHit);
-					return true;
-				}
-				return false;
-			}), enemies.end());
+			enemies.erase(std::remove_if(enemies.begin(), enemies.end(),
+				[&player, &OnPlayerHit](const DjipiApp::Enemy& enemy) {
+					if (Djipi::CheckCollisionAABB(enemy.GetCollider(), player.GetCollider()) && !player.IsGhost())
+					{
+						SDL_PushEvent(&OnPlayerHit);
+						return true;
+					}
+					return false;
+				}), enemies.end());
 
-		// UPDATING
-		// Updates methods here
+			// UPDATING
+			// Updates methods here
 
-		player.Update(deltaTime);
-		factory.Update(deltaTime);
+			player.Update(deltaTime);
+			factory.Update(deltaTime);
 
-		// RENDERING 
-		SDL_SetRenderDrawColor(renderer.GetSDLRenderer(), 240, 240, 240, 255);
-		SDL_RenderClear(renderer.GetSDLRenderer());
-		SDL_SetRenderDrawColor(renderer.GetSDLRenderer(), 255, 255, 255, 255);
+			// RENDERING 
+			SDL_SetRenderDrawColor(renderer.GetSDLRenderer(), 240, 240, 240, 255);
+			SDL_RenderClear(renderer.GetSDLRenderer());
+			SDL_SetRenderDrawColor(renderer.GetSDLRenderer(), 255, 255, 255, 255);
 
-		RenderGround(renderer, resourceManager);
-		//RenderOverlay(renderer, resourceManager);
+			RenderGround(renderer, resourceManager);
+			RenderOverlayGround(renderer, resourceManager);
 		 
-		for (DjipiApp::Fireball& fireball : fireballs)
-		{
-			fireball.Update(deltaTime);
-			fireball.Render(renderer.GetSDLRenderer());
+			for (DjipiApp::Fireball& fireball : fireballs)
+			{
+				fireball.Update(deltaTime);
+				fireball.Render(renderer.GetSDLRenderer());
+			}
+
+			for (DjipiApp::Enemy& enemy : enemies)
+			{
+				enemy.UpdateDestination(player.GetTransform2D().position);
+				enemy.Update(deltaTime);
+				enemy.Render(renderer.GetSDLRenderer());
+			}
+
+			// Render all objects in the scene here
+
+			player.Render(renderer.GetSDLRenderer());
+
+
+			// UI Rendering
+			Djipi::RenderText(scoreTexture, renderer, 70, 40);
+			RenderLives(player.GetLives(), SCREEN_WIDTH - 250, 45, renderer, resourceManager);
+
+			RenderOverlay(renderer, resourceManager);
+
+#pragma endregion
 		}
-
-		for (DjipiApp::Enemy& enemy : enemies)
-		{
-			enemy.UpdateDestination(player.GetTransform2D().position);
-			enemy.Update(deltaTime);
-			enemy.Render(renderer.GetSDLRenderer());
-		}
-
-		// Render all objects in the scene here
-
-		player.Render(renderer.GetSDLRenderer());
-
-		RenderOverlay(renderer, resourceManager);
 
 		SDL_RenderPresent(renderer.GetSDLRenderer());
 	}

@@ -18,11 +18,7 @@ namespace DjipiApp
 			m_Transform.SetSize(ENEMY_SIZE, ENEMY_SIZE);
 
 			m_MoveDestination = Djipi::Vector2(0, 0);
-		}
-
-		~Enemy()
-		{
-			SDL_PushEvent(&OnEnemyDeath);
+			m_RotAngle = 0;
 		}
 
 		void Update(double deltaTime) override
@@ -89,7 +85,5 @@ namespace DjipiApp
 				m_RotAngle *= -1;
 			}
 		}
-
-		SDL_Event OnEnemyDeath = { UserEvents::ENEMY_DIE };
 	};
 }
