@@ -17,6 +17,7 @@ namespace DjipiApp
 		void LooseLife();
 
 		bool IsGhost() const;
+		Uint16 GetLives() const;
 
 	private:
 		double m_RotAngle;

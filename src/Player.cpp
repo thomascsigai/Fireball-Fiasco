@@ -23,6 +23,26 @@ namespace DjipiApp
 			}
 		}
 
+		if (m_Transform.position.y <= 0)
+		{
+			m_Transform.SetPosition(m_Transform.position.x, 0);
+		}
+		
+		if (m_Transform.position.y >= SCREEN_HEIGHT - PLAYER_SIZE)
+		{
+			m_Transform.SetPosition(m_Transform.position.x, SCREEN_HEIGHT - PLAYER_SIZE);
+		}
+		
+		if (m_Transform.position.x <= 0)
+		{
+			m_Transform.SetPosition(0, m_Transform.position.y);
+		}
+
+		if (m_Transform.position.x >= SCREEN_WIDTH - PLAYER_SIZE)
+		{
+			m_Transform.SetPosition(SCREEN_WIDTH - PLAYER_SIZE, m_Transform.position.y);
+		}
+
 		GameObject::Move(deltaTime);
 	}
 
@@ -123,5 +143,10 @@ namespace DjipiApp
 	bool Player::IsGhost() const
 	{
 		return m_IsGhost;
+	}
+
+	Uint16 Player::GetLives() const
+	{
+		return m_Lives;
 	}
 }
