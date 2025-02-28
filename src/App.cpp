@@ -58,6 +58,20 @@ void RenderGround(Djipi::Renderer& renderer, Djipi::ResourceManager& resourceMan
 	}
 }
 
+void RenderOverlay(Djipi::Renderer& renderer, Djipi::ResourceManager& resourceManager)
+{
+	std::shared_ptr<Djipi::Texture> texture = resourceManager.GetTexture("resources\\textures\\overlay.png");
+
+	if (texture == nullptr)
+	{
+		APP_LOG_INFO("Could not render ground.");
+		return;
+	}
+
+	SDL_Rect rect = { 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT };
+	SDL_RenderCopy(renderer.GetSDLRenderer(), texture->GetSDLTexture(), NULL, &rect);
+}
+
 int main(int argc, char* argv[])
 {
 	if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO) < 0)
@@ -182,6 +196,7 @@ int main(int argc, char* argv[])
 		SDL_SetRenderDrawColor(renderer.GetSDLRenderer(), 255, 255, 255, 255);
 
 		RenderGround(renderer, resourceManager);
+		//RenderOverlay(renderer, resourceManager);
 		 
 		for (DjipiApp::Fireball& fireball : fireballs)
 		{
@@ -199,6 +214,8 @@ int main(int argc, char* argv[])
 		// Render all objects in the scene here
 
 		player.Render(renderer.GetSDLRenderer());
+
+		RenderOverlay(renderer, resourceManager);
 
 		SDL_RenderPresent(renderer.GetSDLRenderer());
 	}
