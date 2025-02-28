@@ -144,6 +144,10 @@ int main(int argc, char* argv[])
 			{
 				soundManager.PlaySound(resourceManager.GetSound("resources\\sounds\\ennemideath.wav"));
 			}
+			if (e.type == UserEvents::FIREBALL_UNSTABLE)
+			{
+				soundManager.PlaySound(resourceManager.GetSound("resources\\sounds\\cursedFireball.wav"));
+			}
 
 			// Handle your events here
 			player.HandleEvent(e);

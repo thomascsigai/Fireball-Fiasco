@@ -40,6 +40,7 @@ namespace DjipiApp
 	{
 		m_IsUnstable = true;
 		m_Velocity -= m_SavedVelocity;
+		SDL_PushEvent(&OnFireballUnstable);
 	}
 
 	bool Fireball::IsUnstable() const

@@ -1,6 +1,7 @@
 #pragma once
 
 #include <Djipi.h>
+#include <UserEvents.h>
 
 namespace DjipiApp
 {
@@ -22,5 +23,7 @@ namespace DjipiApp
 		bool m_IsUnstable;
 
 		void BecomeUnstable();
+
+		SDL_Event OnFireballUnstable = { UserEvents::FIREBALL_UNSTABLE };
 	};
 }
