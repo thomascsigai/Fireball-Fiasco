@@ -40,7 +40,9 @@ namespace Djipi
 	void RenderText(SDL_Texture* textTexture, Djipi::Renderer& renderer, int x, int y)
 	{
 		int texWidth, texHeight;
-		SDL_QueryTexture(textTexture, NULL, NULL, &texWidth, &texHeight);
+		if (SDL_QueryTexture(textTexture, NULL, NULL, &texWidth, &texHeight) != 0) {
+			APP_LOG_WARN("SDL_QueryTexture a échoué : " << SDL_GetError());
+		}
 
 		SDL_Rect rect = { x, y, texWidth, texHeight };
 		SDL_RenderCopy(renderer.GetSDLRenderer(), textTexture, NULL, &rect);
