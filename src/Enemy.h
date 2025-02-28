@@ -22,7 +22,7 @@ namespace DjipiApp
 
 		~Enemy()
 		{
-			APP_LOG_INFO("Ennemi die");
+			SDL_PushEvent(&OnEnemyDeath);
 		}
 
 		void Update(double deltaTime) override
@@ -89,5 +89,7 @@ namespace DjipiApp
 				m_RotAngle *= -1;
 			}
 		}
+
+		SDL_Event OnEnemyDeath = { UserEvents::ENEMY_DIE };
 	};
 }

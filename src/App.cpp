@@ -91,6 +91,12 @@ int main(int argc, char* argv[])
 
 	DjipiApp::EnemyFactory factory = DjipiApp::EnemyFactory(enemies, &resourceManager);
 
+	// MUSIC
+	soundManager.PlaySound(resourceManager.GetSound("resources\\sounds\\music.wav"), -1);
+
+	// Events
+	SDL_Event OnPlayerHit = { UserEvents::PLAYER_HIT };
+
 	// GAME LOOP
 	while (!quit)
 	{
@@ -113,6 +119,16 @@ int main(int argc, char* argv[])
 			if (e.type == UserEvents::SPAWN_FIREBALL)
 			{
 				SpawnFireball(player.GetTransform2D().position, player.GetTransform2D().size, fireballs, resourceManager);
+				soundManager.PlaySound(resourceManager.GetSound("resources\\sounds\\fireball.wav"));
+			}
+			if (e.type == UserEvents::PLAYER_HIT)
+			{
+				player.LooseLife();
+				soundManager.PlaySound(resourceManager.GetSound("resources\\sounds\\lostlive.wav"));
+			}
+			if (e.type == UserEvents::ENEMY_DIE)
+			{
+				soundManager.PlaySound(resourceManager.GetSound("resources\\sounds\\ennemideath.wav"));
 			}
 
 			// Handle your events here
@@ -139,16 +155,16 @@ int main(int argc, char* argv[])
 			{
 				if (Djipi::CheckCollisionAABB(player.GetCollider(), fireball.GetCollider()) && !player.IsGhost())
 				{
-					player.LooseLife();
+					SDL_PushEvent(&OnPlayerHit);
 				}
 			}
 		}
 
 		enemies.erase(std::remove_if(enemies.begin(), enemies.end(),
-			[&player](const DjipiApp::Enemy& enemy) {
+			[&player, &OnPlayerHit](const DjipiApp::Enemy& enemy) {
 				if (Djipi::CheckCollisionAABB(enemy.GetCollider(), player.GetCollider()) && !player.IsGhost())
 				{
-					player.LooseLife();
+					SDL_PushEvent(&OnPlayerHit);
 					return true;
 				}
 				return false;
