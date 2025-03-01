@@ -464,6 +464,21 @@ int main(int argc, char* argv[])
 						factory.Start();
 					}
 				}
+				if (e.type == UserEvents::SPAWN_FIREBALL)
+				{
+				}
+				if (e.type == UserEvents::PLAYER_HIT)
+				{
+				}
+				if (e.type == UserEvents::ENEMY_DIE)
+				{
+				}
+				if (e.type == UserEvents::FIREBALL_UNSTABLE)
+				{
+				}
+				if (e.type == UserEvents::PLAYER_DIE)
+				{
+				}
 			}
 
 			RenderGameOver(renderer, resourceManager);

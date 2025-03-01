@@ -21,15 +21,15 @@ constexpr Uint16 SPLASH_SCREEN_TIME = 3000;
 // GAME SPECIFIC SETTINGS -------------------------------------------
 
 constexpr Uint16 PLAYER_SPEED = 300;
-constexpr Uint16 PLAYER_SIZE = 40;
+constexpr Uint16 PLAYER_SIZE = 35;
 constexpr Uint16 GHOST_DURATION = 3000;
 
 constexpr Uint16 FIREBALL_SPEED = 500;
-constexpr Uint16 FIREBALL_SIZE = 25;
+constexpr Uint16 FIREBALL_SIZE = 20;
 constexpr Uint16 TIME_BEFORE_UNSTABLE = 3000; // In ms
 const size_t MAX_FIREBALLS_NUMBER = 50;
 
-constexpr Uint16 ENEMY_SIZE = 40;
+constexpr Uint16 ENEMY_SIZE = 35;
 constexpr Uint16 ENEMY_SPEED = 250;
 constexpr Uint16 ENEMY_BASE_SPAWN_TIME = 2000;
 constexpr Uint16 ENEMY_MIN_SPAWN_TIME = 500;

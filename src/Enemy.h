@@ -36,8 +36,8 @@ namespace DjipiApp
 			if (auto texture = m_Texture.lock())
 			{
 				SDL_Rect rect = {
-			m_Transform.position.x, m_Transform.position.y,
-			m_Transform.size.x, m_Transform.size.y
+			m_Transform.position.x - 5, m_Transform.position.y - 5,
+			m_Transform.size.x + 10, m_Transform.size.y + 10
 				};
 				SDL_RenderCopyEx(renderer, texture->GetSDLTexture(), NULL, &rect, m_RotAngle, NULL, SDL_RendererFlip::SDL_FLIP_NONE);
 			}

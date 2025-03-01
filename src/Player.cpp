@@ -52,8 +52,8 @@ namespace DjipiApp
 		if (texture && !m_IsGhost)
 		{
 			SDL_Rect rect = {
-		m_Transform.position.x, m_Transform.position.y,
-		m_Transform.size.x, m_Transform.size.y
+		m_Transform.position.x - 5, m_Transform.position.y - 5 ,
+		m_Transform.size.x + 10, m_Transform.size.y + 10
 			};
 			SDL_RenderCopyEx(renderer, texture->GetSDLTexture(), NULL, &rect, m_RotAngle, NULL, SDL_RendererFlip::SDL_FLIP_NONE);
 		}
@@ -125,7 +125,6 @@ namespace DjipiApp
 	{
 		if (m_GhostTimer.IsStarted() && m_GhostTimer.GetTicks() < GHOST_DURATION)
 		{
-			APP_LOG_INFO("Player is ghost");
 			return;
 		}
 		m_GhostTimer.Stop();

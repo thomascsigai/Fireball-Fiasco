@@ -13,6 +13,7 @@ namespace DjipiApp
 			std::shared_ptr<Djipi::Texture> unstableTexture);
 
 		void Update(double deltaTime) override;
+		void Render(SDL_Renderer* renderer) override;
 
 		void CollideEnemy();
 		bool IsUnstable() const;
@@ -22,8 +23,10 @@ namespace DjipiApp
 		Djipi::Timer m_UnstableTimer;
 
 		bool m_IsUnstable;
+		double m_RotAngle;
 
 		void BecomeUnstable();
+		void CalculateRotationAngle();
 
 		std::shared_ptr<Djipi::Texture> m_UnstableTexture;
 
