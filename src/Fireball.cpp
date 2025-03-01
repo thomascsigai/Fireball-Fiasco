@@ -24,6 +24,12 @@ namespace DjipiApp
 			BecomeUnstable();
 		}
 
+		if (m_Transform.position.y <= 0 || m_Transform.position.y >= SCREEN_HEIGHT - FIREBALL_SIZE
+			|| m_Transform.position.x <= 0 || m_Transform.position.x >= SCREEN_WIDTH - FIREBALL_SIZE)
+		{
+			BecomeUnstable();
+		}
+
 		Djipi::GameObject::Move(deltaTime);
 	}
 
@@ -41,10 +47,22 @@ namespace DjipiApp
 
 	void Fireball::BecomeUnstable()
 	{
-		m_IsUnstable = true;
-		m_Velocity -= m_SavedVelocity;
-		SetTexture(m_UnstableTexture);
-		SDL_PushEvent(&OnFireballUnstable);
+		if (!m_IsUnstable)
+		{
+			m_IsUnstable = true;
+
+			if (m_Velocity.x != 0 && m_Velocity.y != 0)
+			{
+				m_Velocity = -m_Velocity;
+			}
+			else
+			{
+				m_Velocity -= m_SavedVelocity;
+			}
+
+			SetTexture(m_UnstableTexture);
+			SDL_PushEvent(&OnFireballUnstable);
+		}
 	}
 
 	bool Fireball::IsUnstable() const
