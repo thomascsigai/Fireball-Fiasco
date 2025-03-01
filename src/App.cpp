@@ -149,7 +149,35 @@ void RenderSplash(Djipi::Renderer& renderer, Djipi::ResourceManager& resourceMan
 
 	if (texture == nullptr)
 	{
-		APP_LOG_INFO("Could not splash screen.");
+		APP_LOG_INFO("Could not render splash screen.");
+		return;
+	}
+
+	SDL_Rect rect = { 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT };
+	SDL_RenderCopy(renderer.GetSDLRenderer(), texture->GetSDLTexture(), NULL, &rect);
+}
+
+void RenderTuto(Djipi::Renderer& renderer, Djipi::ResourceManager& resourceManager)
+{
+	std::shared_ptr<Djipi::Texture> texture = resourceManager.GetTexture("resources\\textures\\tuto.png");
+
+	if (texture == nullptr)
+	{
+		APP_LOG_INFO("Could not render tuto.");
+		return;
+	}
+
+	SDL_Rect rect = { SCREEN_WIDTH / 2 - 307, SCREEN_HEIGHT / 2 - 111, 614, 223 };
+	SDL_RenderCopy(renderer.GetSDLRenderer(), texture->GetSDLTexture(), NULL, &rect);
+}
+
+void RenderGameOver(Djipi::Renderer& renderer, Djipi::ResourceManager& resourceManager)
+{
+	std::shared_ptr<Djipi::Texture> texture = resourceManager.GetTexture("resources\\textures\\gameover.png");
+
+	if (texture == nullptr)
+	{
+		APP_LOG_INFO("Could not render tuto.");
 		return;
 	}
 
@@ -179,9 +207,10 @@ int main(int argc, char* argv[])
 	Uint64 currentTime;
 	double deltaTime;
 
-	bool game = false;
-	bool menu = false;
 	bool splash = true;
+	bool menu = false;
+	bool game = false;
+	bool gameOver = false;
 
 	Djipi::Timer splashTimer;
 	splashTimer.Start();
@@ -326,7 +355,7 @@ int main(int argc, char* argv[])
 					factory.Reset();
 
 					game = false;
-					menu = true;
+					gameOver = true;
 				}
 
 				// Handle your events here
@@ -382,6 +411,7 @@ int main(int argc, char* argv[])
 			SDL_SetRenderDrawColor(renderer.GetSDLRenderer(), 255, 255, 255, 255);
 
 			RenderGround(renderer, resourceManager);
+			RenderTuto(renderer, resourceManager);
 			RenderOverlayGround(renderer, resourceManager);
 		 
 			for (DjipiApp::Fireball& fireball : fireballs)
@@ -406,6 +436,35 @@ int main(int argc, char* argv[])
 			Djipi::RenderText(scoreTexture, renderer, 70, 40);
 			RenderLives(player.GetLives(), SCREEN_WIDTH - 250, 45, renderer, resourceManager);
 
+			RenderOverlay(renderer, resourceManager);
+
+#pragma endregion
+		}
+
+		if (gameOver)
+		{
+			#pragma region GAME_OVER
+
+			// EVENTS LOOP
+			while (SDL_PollEvent(&e) != 0)
+			{
+				if (e.type == SDL_QUIT)
+				{
+					quit = true;
+				}
+				if (e.type == SDL_KEYDOWN && e.key.repeat == 0)
+				{
+					if (e.key.keysym.sym == SDLK_SPACE)
+					{
+						gameOver = false;
+						game = true;
+
+						factory.Start();
+					}
+				}
+			}
+
+			RenderGameOver(renderer, resourceManager);
 			RenderOverlay(renderer, resourceManager);
 
 #pragma endregion

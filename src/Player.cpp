@@ -145,6 +145,9 @@ namespace DjipiApp
 		m_RotAngle = 0;
 		m_Lives = 3;
 		m_IsGhost = false;
+
+		m_Velocity.x = 0;
+		m_Velocity.y = 0;
 	}
 
 	bool Player::IsGhost() const
