@@ -457,6 +457,10 @@ int main(int argc, char* argv[])
 						gameOver = false;
 						game = true;
 
+						score = 0;
+						fireballs = std::array<DjipiApp::Fireball, MAX_FIREBALLS_NUMBER>();
+						
+						Djipi::LoadText(scoreTexture, "000", 75, resourceManager, renderer, { 255, 255, 255, 255 });
 						factory.Start();
 					}
 				}
