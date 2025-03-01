@@ -9,7 +9,8 @@ namespace DjipiApp
 	{
 	public:
 		Fireball() = default;
-		Fireball(Djipi::Vector2 position, Djipi::Vector2 moveDirection);
+		Fireball(Djipi::Vector2 position, Djipi::Vector2 moveDirection,
+			std::shared_ptr<Djipi::Texture> unstableTexture);
 
 		void Update(double deltaTime) override;
 
@@ -23,6 +24,8 @@ namespace DjipiApp
 		bool m_IsUnstable;
 
 		void BecomeUnstable();
+
+		std::shared_ptr<Djipi::Texture> m_UnstableTexture;
 
 		SDL_Event OnFireballUnstable = { UserEvents::FIREBALL_UNSTABLE };
 	};

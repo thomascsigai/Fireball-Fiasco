@@ -2,7 +2,8 @@
 
 namespace DjipiApp
 {
-	Fireball::Fireball(Djipi::Vector2 position, Djipi::Vector2 moveDirection)
+	Fireball::Fireball(Djipi::Vector2 position, Djipi::Vector2 moveDirection,
+		std::shared_ptr<Djipi::Texture> unstableTexture)
 	{
 		m_Transform.SetPosition(position.x, position.y);
 		m_Transform.SetSize(FIREBALL_SIZE, FIREBALL_SIZE);
@@ -11,6 +12,8 @@ namespace DjipiApp
 		m_SavedVelocity = Djipi::Vector2(0, 0);
 
 		m_IsUnstable = false;
+
+		m_UnstableTexture = unstableTexture;
 	}
 
 	void Fireball::Update(double deltaTime)
@@ -40,6 +43,7 @@ namespace DjipiApp
 	{
 		m_IsUnstable = true;
 		m_Velocity -= m_SavedVelocity;
+		SetTexture(m_UnstableTexture);
 		SDL_PushEvent(&OnFireballUnstable);
 	}
 

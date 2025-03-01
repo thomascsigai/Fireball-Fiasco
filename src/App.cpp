@@ -29,8 +29,8 @@ void SpawnFireball(const Djipi::Vector2& playerPosition, const Djipi::Vector2& p
 
 	Djipi::Vector2 fireballPosition = playerPosition + (playerSize / 2) - Djipi::Vector2(FIREBALL_SIZE / 2, FIREBALL_SIZE / 2);
 
-	fireballs[index] = DjipiApp::Fireball(fireballPosition, moveDirection);
-	fireballs[index].SetTexture(resourceManager.GetTexture("resources\\textures\\fireball.png"));
+	fireballs[index] = DjipiApp::Fireball(fireballPosition, moveDirection, resourceManager.GetTexture("resources\\textures\\fireball.png"));
+	fireballs[index].SetTexture(resourceManager.GetTexture("resources\\textures\\fireball2.png"));
 	index = (index + 1) % MAX_FIREBALLS_NUMBER;
 }
 
