@@ -8,9 +8,7 @@ endif()
 
 project ("Djipi-App")
 
-if(WIN32 AND CMAKE_BUILD_TYPE STREQUAL "Release")
-    set(CMAKE_WIN32_EXECUTABLE ON)
-endif()
+
 
 find_package(SDL2 REQUIRED)
 find_package(SDL2_ttf REQUIRED)

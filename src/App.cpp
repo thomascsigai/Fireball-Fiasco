@@ -465,6 +465,7 @@ int main(int argc, char* argv[])
 			}
 
 			RenderGameOver(renderer, resourceManager);
+			Djipi::RenderText(scoreTexture, renderer, 520, 755);
 			RenderOverlay(renderer, resourceManager);
 
 #pragma endregion
