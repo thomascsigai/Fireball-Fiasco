@@ -366,21 +366,19 @@ int main(int argc, char* argv[])
 		
 			for (DjipiApp::Fireball& fireball : fireballs)
 			{
-				if (!fireball.IsUnstable())
-				{
-					enemies.erase(std::remove_if(enemies.begin(), enemies.end(),
-						[&fireball](const DjipiApp::Enemy& enemy) {
-							if (Djipi::CheckCollisionAABB(enemy.GetCollider(), fireball.GetCollider()))
-							{
-								fireball.CollideEnemy();
-								SDL_Event OnEnemyDie = { UserEvents::ENEMY_DIE };
-								SDL_PushEvent(&OnEnemyDie);
-								return true;
-							}
-							return false;
-						}), enemies.end());
-				}
-				else
+				enemies.erase(std::remove_if(enemies.begin(), enemies.end(),
+					[&fireball](const DjipiApp::Enemy& enemy) {
+						if (Djipi::CheckCollisionAABB(enemy.GetCollider(), fireball.GetCollider()))
+						{
+							fireball.CollideEnemy();
+							SDL_Event OnEnemyDie = { UserEvents::ENEMY_DIE };
+							SDL_PushEvent(&OnEnemyDie);
+							return true;
+						}
+						return false;
+					}), enemies.end());
+
+				if (fireball.IsUnstable())
 				{
 					if (Djipi::CheckCollisionAABB(player.GetCollider(), fireball.GetCollider()) && !player.IsGhost())
 					{

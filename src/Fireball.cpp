@@ -35,7 +35,7 @@ namespace DjipiApp
 
 	void Fireball::CollideEnemy()
 	{
-		if (!m_UnstableTimer.IsStarted())
+		if (!m_UnstableTimer.IsStarted() && !m_IsUnstable)
 		{
 			m_SavedVelocity = m_Velocity;
 			m_Velocity.x = 0;
