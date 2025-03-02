@@ -20,6 +20,7 @@ namespace DjipiApp
 			if (m_GhostTimer.GetTicks() > GHOST_DURATION)
 			{
 				m_IsGhost = false;
+				SDL_PushEvent(&OnPlayerRevive);
 			}
 		}
 
@@ -58,7 +59,7 @@ namespace DjipiApp
 
 			if (m_IsGhost)
 			{
-				SDL_SetTextureAlphaMod(texture->GetSDLTexture(), 128);
+				SDL_SetTextureAlphaMod(texture->GetSDLTexture(), 100);
 			}
 			else
 			{

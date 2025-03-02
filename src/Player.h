@@ -34,5 +34,6 @@ namespace DjipiApp
 		// Events
 		SDL_Event OnCastFireball = { UserEvents::SPAWN_FIREBALL };
 		SDL_Event OnPlayerDie = { UserEvents::PLAYER_DIE };
+		SDL_Event OnPlayerRevive = { UserEvents::PLAYER_REVIVE };
 	};
 }

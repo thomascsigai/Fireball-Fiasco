@@ -357,6 +357,10 @@ int main(int argc, char* argv[])
 					game = false;
 					gameOver = true;
 				}
+				if (e.type == UserEvents::PLAYER_REVIVE)
+				{
+					soundManager.PlaySound(resourceManager.GetSound("resources\\sounds\\huh.wav"));
+				}
 
 				// Handle your events here
 				player.HandleEvent(e);
