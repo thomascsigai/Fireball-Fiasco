@@ -4,8 +4,10 @@
 
 // WINDOW SETTINGS --------------------------------------------------
 
-constexpr Uint16 SCREEN_WIDTH = 800;
-constexpr Uint16 SCREEN_HEIGHT = 600;
+constexpr Uint16 SCREEN_WIDTH = 950;
+constexpr Uint16 SCREEN_HEIGHT = 900;
+
+constexpr Uint16 SPLASH_SCREEN_TIME = 3000;
 
 
 // RESOURCES SETTINGS ---------------------------------------------------
@@ -18,7 +20,20 @@ constexpr Uint16 SCREEN_HEIGHT = 600;
 
 // GAME SPECIFIC SETTINGS -------------------------------------------
 
-constexpr Uint16 PLAYER_SPEED = 100;
+constexpr Uint16 PLAYER_SPEED = 300;
+constexpr Uint16 PLAYER_SIZE = 35;
+constexpr Uint16 GHOST_DURATION = 3000;
+constexpr Uint16 GHOST_BLINKING_FREQUENCY = 200;
+
+constexpr Uint16 FIREBALL_SPEED = 500;
+constexpr Uint16 FIREBALL_SIZE = 20;
+constexpr Uint16 TIME_BEFORE_UNSTABLE = 3000; // In ms
+const size_t MAX_FIREBALLS_NUMBER = 50;
+
+constexpr Uint16 ENEMY_SIZE = 35;
+constexpr Uint16 ENEMY_SPEED = 250;
+constexpr Uint16 ENEMY_BASE_SPAWN_TIME = 2250;
+constexpr Uint16 ENEMY_MIN_SPAWN_TIME = 850;
 
 // KEYBINDS ---------------------------------------------------------
 

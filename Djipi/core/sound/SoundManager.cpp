@@ -27,6 +27,7 @@ namespace Djipi
 		}
 
 		Mix_PlayChannel(-1, sound->GetMixChunk(), loops);
+		Mix_Volume(-1, 30);
 		return true;
 	}
 
