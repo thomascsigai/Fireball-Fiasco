@@ -57,7 +57,10 @@ namespace DjipiApp
 		if (m_Transform.position.y <= 0 || m_Transform.position.y >= SCREEN_HEIGHT - FIREBALL_SIZE
 			|| m_Transform.position.x <= 0 || m_Transform.position.x >= SCREEN_WIDTH - FIREBALL_SIZE)
 		{
-			BecomeUnstable();
+			if (!m_UnstableTimer.IsStarted() && m_Velocity.x != 0 && m_Velocity.y != 0)
+			{
+				BecomeUnstable();
+			}
 		}
 
 		CalculateRotationAngle();
