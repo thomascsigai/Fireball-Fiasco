@@ -25,6 +25,7 @@ namespace DjipiApp
 		Uint16 m_Lives;
 
 		Djipi::Timer m_GhostTimer;
+		Djipi::Timer m_BlinkTimer;
 		bool m_IsGhost;
 
 		// Calculate the player rotation angle to face the mouse position.

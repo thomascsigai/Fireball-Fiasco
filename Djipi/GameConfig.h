@@ -23,6 +23,7 @@ constexpr Uint16 SPLASH_SCREEN_TIME = 3000;
 constexpr Uint16 PLAYER_SPEED = 300;
 constexpr Uint16 PLAYER_SIZE = 35;
 constexpr Uint16 GHOST_DURATION = 3000;
+constexpr Uint16 GHOST_BLINKING_FREQUENCY = 200;
 
 constexpr Uint16 FIREBALL_SPEED = 500;
 constexpr Uint16 FIREBALL_SIZE = 20;
