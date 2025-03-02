@@ -19,7 +19,7 @@ namespace Djipi
 	{
 		bool success = true;
 
-		m_SDLWindow = SDL_CreateWindow("Djipi App", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
+		m_SDLWindow = SDL_CreateWindow("Fireball Fiasco", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
 
 		if (m_SDLWindow == nullptr)
 		{
