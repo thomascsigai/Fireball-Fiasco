@@ -24,11 +24,13 @@ namespace DjipiApp
 
 	void EnemyFactory::Update(double deltaTime)
 	{
-		m_TimerModifier += 1;
-		int modifier = std::clamp(ENEMY_BASE_SPAWN_TIME - (int)(m_TimerModifier / 300), (int)ENEMY_MIN_SPAWN_TIME, (int)ENEMY_BASE_SPAWN_TIME);
+		m_TimerModifier = SDL_GetTicks() / 50;
+
+;		int modifier = std::clamp(ENEMY_BASE_SPAWN_TIME - (int)(m_TimerModifier), (int)ENEMY_MIN_SPAWN_TIME, (int)ENEMY_BASE_SPAWN_TIME);
 
 		if (m_RespawnTimer.GetTicks() > modifier)
 		{
+			APP_LOG_INFO("Spawn " << m_RespawnTimer.GetTicks());
 			m_RespawnTimer.Stop();
 			SpawnEnemy();
 			m_RespawnTimer.Start();
