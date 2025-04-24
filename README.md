@@ -11,7 +11,7 @@ Dodge, roll, and avoid your own magical fireballs while trying to stay alive for
 
 ## Play Fireball Fiasco
 
-You can play the game directly on **[itch.io](https://thomas-csigai.itch.io/fireball-fiasco)**.
+You can download and learn more about the game directly on **[itch.io](https://thomas-csigai.itch.io/fireball-fiasco)**.
 
 ## Made with Zefir
 
