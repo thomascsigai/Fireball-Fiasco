@@ -21,7 +21,7 @@ Check out the [Zefir engine](https://github.com/thomascsigai/Zefir) to learn mor
 ## License
 
 MIT License. Do what you want.
-© 2025 [Your Name](https://github.com/yourusername)
+© 2025 [Thomas Csigai](https://github.com/thomascsigai)
 
 ## Links
 
